@@ -115,7 +115,32 @@ if (savedCity && userName) {
 $("form").on("submit", function (event) {
     event.preventDefault();
     var cityName = $("#city").val();
+    var name = $("#name").val();
+    localStorage.setItem('name', (name));
+    localStorage.setItem('city', cityName);
     if (cityName) {
         getCityData(cityName, "startup");
     }
+    else {
+        var entryInvalidParagraph = document.querySelector('#invalid-entry-p');
+        if (!entryInvalidParagraph) {
+            var entryInvalidParagraph = document.createElement('p');
+            var formDiv = document.querySelector('#map');
+            entryInvalidParagraph.id = 'invalid-entry-p';
+            entryInvalidParagraph.textContent = 'Must fill out both forms';
+            entryInvalidParagraph.className = 'non-fading';
+            entryInvalidParagraph.className = 'fading';
+            formDiv.appendChild(entryInvalidParagraph);
+        }
+        else {
+            entryInvalidParagraph.innerHTML = '';
+            var formDiv = document.querySelector('#map');
+            entryInvalidParagraph.id = 'invalid-entry-p';
+            entryInvalidParagraph.textContent = 'Must fill out both forms';
+            entryInvalidParagraph.className = 'non-fading';
+            entryInvalidParagraph.className = 'fading';
+            formDiv.appendChild(entryInvalidParagraph);
+        }
+    }
 });
+

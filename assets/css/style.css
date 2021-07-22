@@ -49,3 +49,28 @@
 #map {
   height: 100%;
 }
+
+/*Add fading class for pop up elements*/
+.fading {
+  -webkit-animation-duration: 1s;
+  -webkit-animation-name: fading;
+  animation-duration: 1s;
+  animation-name: fading;
+  color: ;
+}
+@-webkit-keyframes fading {
+  from {
+    color: rgba(255, 51, 0, 0.582);
+  }
+  to {
+    color: black;
+  }
+}
+@keyframes fading {
+  from {
+    color: black;
+  }
+  to {
+    color: rgba(255, 51, 0, 0.582);
+  }
+}
