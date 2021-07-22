@@ -1,5 +1,5 @@
-//Fetches city coordinates from Openweather
-function getCoordinates(city) {
+
+function getCityData(city, module) {
     fetch("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=4493e550e9acf995029c8985968d6001")
         .then(function (response) {
             if (response.ok) {
@@ -7,14 +7,17 @@ function getCoordinates(city) {
             }
         })
         .then(function (data) {
-            //Sends object to getForecast function
-            getForecast(data);
+            console.log(data);
+            if (module === "weather") {
+                getForecast(data);
+            } else if (module === "traffic") {
+                initMap(data);
+            }
         })
         .catch(function (error) {
             alert("Unable retrieve city from Openweather");
         });
 };
-//Fetches forecast data from Openweather
 function getForecast(city) {
     fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + city.coord.lat + "&lon=" + city.coord.lon + "&appid=4493e550e9acf995029c8985968d6001")
         .then(function (response) {
@@ -25,9 +28,16 @@ function getForecast(city) {
             }
         })
         .then(function (data) {
-            console.log(city);
+            console.log("Forecast Object:")
             console.log(data);
         })
 };
 
-getCoordinates("phoenix");
+function initMap(city) {
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 13,
+      center: { lat: city.coord.lat, lng: city.coord.lon },
+    });
+    const trafficLayer = new google.maps.TrafficLayer();
+    trafficLayer.setMap(map);
+  }
