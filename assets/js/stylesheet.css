@@ -1,0 +1,11 @@
+.splash-container {
+  display: flex;
+}
+
+.splash {
+  text-align: center;
+}
+
+.splash-head {
+  justify-content: center;
+}
