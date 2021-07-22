@@ -67,9 +67,6 @@ function getCityData(city, module) {
                 initMap(data);
             }
         })
-        .catch(function (error) {
-            alert("Unable retrieve city from Openweather");
-        });
 };
 
 //Uses coordinates to get 5-day forecast data
@@ -114,3 +111,11 @@ if (savedCity && userName) {
     modalMaker("name");
     getCityData(savedCity, "startup");
 };
+
+$("form").on("submit", function (event) {
+    event.preventDefault();
+    var cityName = $("#city").val();
+    if (cityName) {
+        getCityData(cityName, "startup");
+    }
+});
