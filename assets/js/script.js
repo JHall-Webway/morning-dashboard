@@ -15,7 +15,7 @@ function modalMaker(type) {
         //
         
         displayInfo(savedCity, userName);
-        localStorage.clear();
+        getCityData(savedCity, "startup");
         localStorage.setItem("city", savedCity);
         localStorage.setItem("name", userName);
     } else if (type === "city") {
@@ -23,8 +23,8 @@ function modalMaker(type) {
         //
         //
         
+        getCityData(savedCity, "startup");
         displayInfo(savedCity, userName);
-        localStorage.removeItem("city")
         localStorage.setItem("city", savedCity);
     } else if (type === "name") {
         //Code to populate data and add listeners
@@ -32,7 +32,6 @@ function modalMaker(type) {
         //
         
         displayInfo(savedCity, userName);
-        localStorage.removeItem("name");
         localStorage.setItem("name", userName);
     } else if (type === "error") {
         //Code to populate error
