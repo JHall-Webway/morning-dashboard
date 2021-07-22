@@ -14,18 +14,18 @@ function modalMaker(type) {
         //
         //
         
-        displayInfo(savedCity, userName);
-        getCityData(savedCity, "startup");
-        localStorage.setItem("city", savedCity);
-        localStorage.setItem("name", userName);
+        // displayInfo(savedCity, userName);
+        // getCityData(savedCity, "startup");
+        // localStorage.setItem("city", savedCity);
+        // localStorage.setItem("name", userName);
     } else if (type === "city") {
         //Code to populate data and add listeners
         //
         //
         
-        getCityData(savedCity, "startup");
-        displayInfo(savedCity, userName);
-        localStorage.setItem("city", savedCity);
+        // getCityData(savedCity, "startup");
+        // displayInfo(savedCity, userName);
+        // localStorage.setItem("city", savedCity);
     } else if (type === "name") {
         //Code to populate data and add listeners
         //
@@ -105,12 +105,12 @@ if (savedCity && userName) {
 } else if (!savedCity && !userName) {
     savedCity = "";
     userName = "";
-    modalMaker("full form");
-} else if (!savedCity) {
+    modalMaker("both");
+} else if (!savedCity && userName) {
     savedCity = "";
-    modalMaker("city form");
-} else if (!userName) {
+    modalMaker("city");
+} else if (savedCity && !userName) {
     userName = "";
-    modalMaker("name form");
+    modalMaker("name");
     getCityData(savedCity, "startup");
 };
