@@ -116,7 +116,7 @@ $("form").on("submit", function (event) {
     event.preventDefault();
     var cityName = $("#city").val();
     var name = $("#name").val();
-    localStorage.setItem('name', (name));
+    localStorage.setItem('name', name);
     localStorage.setItem('city', cityName);
     if (cityName) {
         getCityData(cityName, "startup");
