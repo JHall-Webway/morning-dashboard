@@ -39,6 +39,7 @@ function modalMaker(type) {
             localStorage.setItem('name', name);
             localStorage.setItem('city', cityName);
             if (cityName && name) {
+                displayInfo(cityName, name);
                 getCityData(cityName, "startup");
                 $(".modal").hide();
             } else {
