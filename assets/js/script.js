@@ -4,25 +4,51 @@ var userName = localStorage.getItem("name");
 
 //Pulls up modal with the appropriate fields for input.
 function modalMaker(type) {
-    //Code to either display or dynamically create modal
-    //
-    //
-
+    $(".modal").show();
     //Populates modal with forms/information according to type
     if (type === "both") {
-        //Code to populate data and add listeners
-        //
-        //
-        
-        // displayInfo(savedCity, userName);
-        // getCityData(savedCity, "startup");
-        // localStorage.setItem("city", savedCity);
-        // localStorage.setItem("name", userName);
+        $("<form>")
+            .append($("<label>")
+                .attr("for", "name")
+                .text("Name:"))
+            .append($("<br>"))
+            .append($("<input>")
+                .attr("type", "text")
+                .attr("id", "nameInput")
+                .attr("name", "name"))
+            .append($("<br>"))
+            .append($("<br>"))
+            .append($("<label>")
+                .attr("for", "city")
+                .text("City:"))
+            .append($("<br>"))
+            .append($("<input>")
+                .attr("type", "text")
+                .attr("id", "cityInput")
+                .attr("name", "city"))
+            .append($("<br>"))
+            .append($("<br>"))
+            .append($("<input>")
+                .attr("type", "submit"))
+            .appendTo($(".modal-content"));
+
+        $("form").on("submit", function (event) {
+            event.preventDefault();
+            var cityName = $("#cityInput").val();
+            var name = $("#nameInput").val();
+            localStorage.setItem('name', name);
+            localStorage.setItem('city', cityName);
+            if (cityName && name) {
+                getCityData(cityName, "startup");
+                $(".modal").hide();
+            }
+
+        });
     } else if (type === "city") {
         //Code to populate data and add listeners
         //
         //
-        
+
         // getCityData(savedCity, "startup");
         // displayInfo(savedCity, userName);
         // localStorage.setItem("city", savedCity);
@@ -30,7 +56,7 @@ function modalMaker(type) {
         //Code to populate data and add listeners
         //
         //
-        
+
         displayInfo(savedCity, userName);
         localStorage.setItem("name", userName);
     } else if (type === "error") {
@@ -59,8 +85,8 @@ function getCityData(city, module) {
             console.log(data);
             //Sends data according to fed parameter to the appropriate function
             if (module === "startup") {
-              getForecast(data);
-              initMap(data);  
+                getForecast(data);
+                initMap(data);
             } else if (module === "weather") {
                 getForecast(data);
             } else if (module === "traffic") {
@@ -71,35 +97,35 @@ function getCityData(city, module) {
 
 //Uses coordinates to get 5-day forecast data
 function getForecast(city) {
-  fetch(
-    "https://api.openweathermap.org/data/2.5/onecall?lat=" +
-      city.coord.lat +
-      "&lon=" +
-      city.coord.lon +
-      "&appid=4493e550e9acf995029c8985968d6001"
-  )
-    .then(function (response) {
-      if (response.ok) {
-        return response.json();
-      } else {
-        alert("ERROR");
-      }
-    })
-    .then(function (data) {
-      console.log("Forecast Object:");
-      console.log(data);
-    });
+    fetch(
+        "https://api.openweathermap.org/data/2.5/onecall?lat=" +
+        city.coord.lat +
+        "&lon=" +
+        city.coord.lon +
+        "&appid=4493e550e9acf995029c8985968d6001"
+    )
+        .then(function (response) {
+            if (response.ok) {
+                return response.json();
+            } else {
+                alert("ERROR");
+            }
+        })
+        .then(function (data) {
+            console.log("Forecast Object:");
+            console.log(data);
+        });
 }
 
 //Uses coordiates to display google map with traffic overlay
 function initMap(city) {
     const map = new google.maps.Map(document.getElementById("map"), {
-      zoom: 13,
-      center: { lat: city.coord.lat, lng: city.coord.lon },
+        zoom: 13,
+        center: { lat: city.coord.lat, lng: city.coord.lon },
     });
     const trafficLayer = new google.maps.TrafficLayer();
     trafficLayer.setMap(map);
-  };
+};
 
 //startup process basied on parameters
 if (savedCity && userName) {
@@ -120,8 +146,8 @@ if (savedCity && userName) {
 
 $("form").on("submit", function (event) {
     event.preventDefault();
-    var cityName = $("#city").val();
-    var name = $("#name").val();
+    var cityName = $("#cityInput").val();
+    var name = $("#nameInput").val();
     localStorage.setItem('name', name);
     localStorage.setItem('city', cityName);
     if (cityName) {
