@@ -11,30 +11,40 @@
     <title>Morning Dashboard</title>
 </head>
 
-<body>
-    <div class="splash-container">
-        <div class="splash" id="map">
-            <h1 class="splash-head">WELCOME</h1>
-            <p class="splash-subhead">Please Enter Your Name and City to Continue</p>
-            <p>
-            <form class="pure-form pure-form-stacked">
-                <fieldset>
-                    <form class="pure-g">
-                        <span class="pure-form-message">This is a required field.</span>
-                        <label for="userName">Your Name</label>
-                        <div class="splash-form">
-                            <input type="text" id="name" placeholder="Name" />
-                        </div>
-                        <label for="city">City</label>
-                        <div class="splash-form">
-                            <input type="text" id="city" placeholder="City" />
-                        </div>
-                        </select>
-                        <button type="submit" class="pure-button pure-button-primary">Begin</button>
-                    </form>
-                </fieldset>
-            </form>
-            </p>
+  <body>
+    <div id="layout">
+      <a href="#menu" id="menuLink" class="menu-link">
+        <span></span>
+      </a>
+
+      <div id="menu">
+        <div class="pure-menu">
+          <a class="pure-menu-heading" href="#name">"User Name"</a>
+
+          <ul class="pure-menu-list">
+            <li class="pure-menu-item">
+              <a href="#home" class="pure-menu-link">Map</a>
+            </li>
+            <li class="pure-menu-item">
+              <a href="#about" class="pure-menu-link">Weather</a>
+            </li>
+
+            <li class="pure-menu-item">
+              <a href="#about" class="pure-menu-link">Both</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div id="main">
+        <div class="header">
+          <h1>Moring Dashboard</h1>
+          <h2>Welcome "User Name"</h2>
+        </div>
+
+        <div class="content">
+          <h2 class="content-subhead">Using the Application</h2>
+          <p>This area would house the inital map or weather</p>
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"

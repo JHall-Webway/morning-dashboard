@@ -71,19 +71,25 @@ function getCityData(city, module) {
 
 //Uses coordinates to get 5-day forecast data
 function getForecast(city) {
-    fetch("https://api.openweathermap.org/data/2.5/onecall?lat=" + city.coord.lat + "&lon=" + city.coord.lon + "&appid=4493e550e9acf995029c8985968d6001")
-        .then(function (response) {
-            if (response.ok) {
-                return response.json()
-            } else {
-                alert("ERROR");
-            }
-        })
-        .then(function (data) {
-            console.log("Forecast Object:")
-            console.log(data);
-        })
-};
+  fetch(
+    "https://api.openweathermap.org/data/2.5/onecall?lat=" +
+      city.coord.lat +
+      "&lon=" +
+      city.coord.lon +
+      "&appid=4493e550e9acf995029c8985968d6001"
+  )
+    .then(function (response) {
+      if (response.ok) {
+        return response.json();
+      } else {
+        alert("ERROR");
+      }
+    })
+    .then(function (data) {
+      console.log("Forecast Object:");
+      console.log(data);
+    });
+}
 
 //Uses coordiates to display google map with traffic overlay
 function initMap(city) {
