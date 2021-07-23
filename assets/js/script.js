@@ -41,6 +41,7 @@ function modalMaker(type) {
             if (cityName && name) {
                 getCityData(cityName, "startup");
                 $(".modal").hide();
+                $(".userName").text(name);
             }
 
         });
@@ -68,9 +69,7 @@ function modalMaker(type) {
 
 //Displays user name and city in element
 function displayInfo(city, name) {
-    //Code that inserts user data into elements
-    //
-    //
+    $(".userName").text(name);
 }
 
 //Fetches immediate data for chosen city, including coordinates and current weather.
