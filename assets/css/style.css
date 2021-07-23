@@ -46,6 +46,49 @@
   display: flex;
   justify-content: center;
 }
+
+#outer-form {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+#fieldset {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+#inner-form {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: center;
+}
+
+#form-span {
+  width: 100%;
+  letter-spacing: normal;
+}
+
+#form-label-name {
+  width: 100%;
+  letter-spacing: normal;
+}
+
+#form-label-city {
+  width: 100%;
+  letter-spacing: normal;
+}
+
+#form-div-name {
+  width: 100%;
+}
+
+#form-div-city {
+  width: 100%;
+}
+
 #map {
   height: 100%;
 }
