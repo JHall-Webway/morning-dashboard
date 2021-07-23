@@ -34,14 +34,17 @@ function modalMaker(type) {
 
         $("form").on("submit", function (event) {
             event.preventDefault();
-            var cityName = $("#cityInput").val();
-            var name = $("#nameInput").val();
+            var cityName = $("#cityInput").val().trim();
+            var name = $("#nameInput").val().trim();
             localStorage.setItem('name', name);
             localStorage.setItem('city', cityName);
             if (cityName && name) {
                 getCityData(cityName, "startup");
                 $(".modal").hide();
-                $(".userName").text(name);
+            } else {
+                $("<p>")
+                    .text("Please fill out both fields!")
+                    .appendTo($(".modal-content"));
             }
 
         });
