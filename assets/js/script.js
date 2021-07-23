@@ -46,24 +46,67 @@ function modalMaker(type) {
                 $("<p>")
                     .text("Please fill out both fields!")
                     .appendTo($(".modal-content"));
-            }
+            };
+        });
+    } else if (type === "name") {
+        $("<form>")
+            .append($("<label>")
+                .attr("for", "name")
+                .text("Name:"))
+            .append($("<br>"))
+            .append($("<input>")
+                .attr("type", "text")
+                .attr("id", "nameInput")
+                .attr("name", "name"))
+            .append($("<br>"))
+            .append($("<br>"))
+            .append($("<input>")
+                .attr("type", "submit"))
+            .appendTo($(".modal-content"));
 
+        $("form").on("submit", function (event) {
+            event.preventDefault();
+            var name = $("#nameInput").val().trim();
+            localStorage.setItem('name', name);
+            if (name) {
+                displayInfo(null, name);
+                $(".modal").hide();
+            } else {
+                $("<p>")
+                    .text("Please fill out your name!")
+                    .appendTo($(".modal-content"));
+            };
         });
     } else if (type === "city") {
-        //Code to populate data and add listeners
-        //
-        //
+        $("<form>")
+            .append($("<label>")
+                .attr("for", "city")
+                .text("City:"))
+            .append($("<br>"))
+            .append($("<input>")
+                .attr("type", "text")
+                .attr("id", "cityInput")
+                .attr("name", "city"))
+            .append($("<br>"))
+            .append($("<br>"))
+            .append($("<input>")
+                .attr("type", "submit"))
+            .appendTo($(".modal-content"));
 
-        // getCityData(savedCity, "startup");
-        // displayInfo(savedCity, userName);
-        // localStorage.setItem("city", savedCity);
-    } else if (type === "name") {
-        //Code to populate data and add listeners
-        //
-        //
-
-        displayInfo(savedCity, userName);
-        localStorage.setItem("name", userName);
+        $("form").on("submit", function (event) {
+            event.preventDefault();
+            var cityName = $("#cityInput").val().trim();
+            localStorage.setItem('city', cityName);
+            if (cityName) {
+                displayInfo(cityName, null);
+                getCityData(cityName, "startup");
+                $(".modal").hide();
+            } else {
+                $("<p>")
+                    .text("Please fill your city!")
+                    .appendTo($(".modal-content"));
+            };
+        });
     } else if (type === "error") {
         //Code to populate error
         //
@@ -73,7 +116,11 @@ function modalMaker(type) {
 
 //Displays user name and city in element
 function displayInfo(city, name) {
-    $(".userName").text(name);
+    if (city && name) {
+        $(".userName").text(name);
+    } else if (!city && name) {
+        $(".userName").text(name);
+    }
 }
 
 //Fetches immediate data for chosen city, including coordinates and current weather.
@@ -140,6 +187,7 @@ if (savedCity && userName) {
     modalMaker("both");
 } else if (!savedCity && userName) {
     savedCity = "";
+    displayInfo(null, userName);
     modalMaker("city");
 } else if (savedCity && !userName) {
     userName = "";
