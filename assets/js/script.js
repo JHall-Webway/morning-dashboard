@@ -45,7 +45,7 @@ function modalMaker(type) {
             } else {
                 $("<p>")
                     .text("Please fill out both fields!")
-                    .appendTo($(".modal-content"));
+                    .prependTo($(".modal-content"));
             };
         });
     } else if (type === "name") {
