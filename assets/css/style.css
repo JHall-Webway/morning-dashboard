@@ -199,6 +199,12 @@ small screens.
   width: 50%;
 }
 
+#weather {
+  background-color: lightblue;
+  width: 50%;
+  margin: 5px 0 0 0;
+}
+
 /* -- Responsive Styles (Media Queries) ------------------------------------- */
 
 /*
