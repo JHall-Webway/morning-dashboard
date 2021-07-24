@@ -166,8 +166,35 @@ function getForecast(city) {
             }
         })
         .then(function (data) {
-            console.log("Forecast Object:");
-            console.log(data);
+            var iconCode = data.current.weather[0].icon;
+            var iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
+            $('#weather')
+                .append($('<img>')
+                .attr("id", "current-icon")
+                .attr('src', iconURL));
+            $('#weather')
+                .append($('<h1>')
+                .text('Temperature: ' + data.current.temp + 'K'));
+            $('#weather')
+                .append($('<h1>')
+                .text('Wind: ' + data.current.wind_speed + 'MPH'));
+            $('#weather')
+                .append($('<h1>')
+                .text('Humidity: ' + data.current.humidity + '%'));
+            $('#weather')
+                .append($('<h1>')
+                .text('UV Index: ' + data.current.uvi));
+
+            var currentTempH1 = document.querySelector('#dashboard-current-h1-temperature');
+            currentTempH1.textContent = 'Temperature: ' + data.current.temp + 'F';
+            var currentWindH1 = document.querySelector('#dashboard-current-h1-wind');
+            currentWindH1.textContent = 'Wind: ' + data.current.wind_speed + 'MPH';
+            var currentHumidityH1 = document.querySelector('#dashboard-current-h1-humidity');
+            currentHumidityH1.textContent = 'Humidity: ' + data.current.humidity + '%';
+            var currentUVH1 = document.querySelector('#dashboard-current-h1-uv');
+            currentUVH1.textContent = data.current.uvi;
+            var currentUVI = data.current.uvi;
+
         });
 }
 
