@@ -167,6 +167,11 @@ small screens.
   margin-top: 0.6em;
 }
 
+.pure-menu-item {
+  height: 40px;
+  margin: 5px 0 0 0;
+}
+
 .modal {
   display: none;
   position: fixed;

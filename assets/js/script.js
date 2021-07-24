@@ -1,3 +1,4 @@
+  
 //Attempt to pull existing data from localStorage 
 var savedCity = localStorage.getItem("city");
 var userName = localStorage.getItem("name");
@@ -5,6 +6,7 @@ var userName = localStorage.getItem("name");
 //Pulls up modal with the appropriate fields for input.
 function modalMaker(type) {
     $(".modal").show();
+    $(".modal-content").html('');
     //Populates modal with forms/information according to type
     if (type === "both") {
         $("<form>")
@@ -109,8 +111,10 @@ function modalMaker(type) {
         });
     } else if (type === "error") {
         //Code to populate error
-        //
-        //
+        $("<form>")
+            .append($("<label>")
+                .attr("for", "error")
+                .text("Error!"))
     }
 };
 
@@ -195,35 +199,7 @@ if (savedCity && userName) {
     getCityData(savedCity, "startup");
 };
 
-// $("form").on("submit", function (event) {
-//     event.preventDefault();
-//     var cityName = $("#cityInput").val();
-//     var name = $("#nameInput").val();
-//     localStorage.setItem('name', name);
-//     localStorage.setItem('city', cityName);
-//     if (cityName) {
-//         getCityData(cityName, "startup");
-//     }
-//     else {
-//         var entryInvalidParagraph = document.querySelector('#invalid-entry-p');
-//         if (!entryInvalidParagraph) {
-//             var entryInvalidParagraph = document.createElement('p');
-//             var formDiv = document.querySelector('#map');
-//             entryInvalidParagraph.id = 'invalid-entry-p';
-//             entryInvalidParagraph.textContent = 'Must fill out both forms';
-//             entryInvalidParagraph.className = 'non-fading';
-//             entryInvalidParagraph.className = 'fading';
-//             formDiv.appendChild(entryInvalidParagraph);
-//         }
-//         else {
-//             entryInvalidParagraph.innerHTML = '';
-//             var formDiv = document.querySelector('#map');
-//             entryInvalidParagraph.id = 'invalid-entry-p';
-//             entryInvalidParagraph.textContent = 'Must fill out both forms';
-//             entryInvalidParagraph.className = 'non-fading';
-//             entryInvalidParagraph.className = 'fading';
-//             formDiv.appendChild(entryInvalidParagraph);
-//         }
-//     }
-// });
-
+$('#username-button').on('click', function(event) {
+    event.preventDefault();
+    modalMaker('both');
+});
