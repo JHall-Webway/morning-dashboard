@@ -3,119 +3,105 @@
 var savedCity = localStorage.getItem("city");
 var userName = localStorage.getItem("name");
 
-//Pulls up modal with the appropriate fields for input.
+//Pulls up modal with the appropriate fields for input and establishes element blocks.
 function modalMaker(type) {
     $(".modal").show();
-    $(".modal-content").html('');
+    var nameTextInput = $("<label>")
+        .attr("for", "name")
+        .text("Name:")
+        .append($("<br>"))
+        .append($("<input>")
+            .attr("type", "text")
+            .attr("id", "nameInput")
+            .attr("name", "name"))
+        .append($("<br>"))
+        .append($("<br>"));
+
+    var cityTextInput = $("<label>")
+        .attr("for", "city")
+        .text("City:")
+        .append($("<br>"))
+        .append($("<input>")
+            .attr("type", "text")
+            .attr("id", "cityInput")
+            .attr("name", "city"))
+        .append($("<br>"))
+        .append($("<br>"));
+
+    var submitButton = $("<input>")
+        .attr("type", "submit");
     //Populates modal with forms/information according to type
     if (type === "both") {
         $("<form>")
-            .append($("<label>")
-                .attr("for", "name")
-                .text("Name:"))
-            .append($("<br>"))
-            .append($("<input>")
-                .attr("type", "text")
-                .attr("id", "nameInput")
-                .attr("name", "name"))
-            .append($("<br>"))
-            .append($("<br>"))
-            .append($("<label>")
-                .attr("for", "city")
-                .text("City:"))
-            .append($("<br>"))
-            .append($("<input>")
-                .attr("type", "text")
-                .attr("id", "cityInput")
-                .attr("name", "city"))
-            .append($("<br>"))
-            .append($("<br>"))
-            .append($("<input>")
-                .attr("type", "submit"))
+            .attr("id", "modal-form")
+            .append(nameTextInput, cityTextInput, submitButton)
             .appendTo($(".modal-content"));
 
         $("form").on("submit", function (event) {
             event.preventDefault();
             var cityName = $("#cityInput").val().trim();
             var name = $("#nameInput").val().trim();
-            localStorage.setItem('name', name);
-            localStorage.setItem('city', cityName);
-            if (cityName && name) {
+            if (cityName && name && cityName != "" && name != "") {
                 $("#city-button").show();
                 $("#username-button").show();
                 displayInfo(cityName, name);
                 getCityData(cityName, "startup");
+                localStorage.setItem('name', name);
+                localStorage.setItem('city', cityName);
+                $(".modal-content").empty();
                 $(".modal").hide();
             } else {
                 $("<p>")
                     .text("Please fill out both fields!")
-                    .prependTo($(".modal-content"));
+                    .appendTo($("#modal-form"));
             };
         });
     } else if (type === "name") {
         $("<form>")
-            .append($("<label>")
-                .attr("for", "name")
-                .text("Name:"))
-            .append($("<br>"))
-            .append($("<input>")
-                .attr("type", "text")
-                .attr("id", "nameInput")
-                .attr("name", "name"))
-            .append($("<br>"))
-            .append($("<br>"))
-            .append($("<input>")
-                .attr("type", "submit"))
-            .appendTo($(".modal-content"));
+            .attr("id", "modal-form")
+            .append(nameTextInput, submitButton)
+            .appendTo(".modal-content");
 
         $("form").on("submit", function (event) {
             event.preventDefault();
             var name = $("#nameInput").val().trim();
-            localStorage.setItem('name', name);
-            if (name) {
+            if (name && name != "") {
                 $("#username-button").show();
                 displayInfo(null, name);
+                localStorage.setItem('name', name);
+                $(".modal-content").empty();
                 $(".modal").hide();
             } else {
                 $("<p>")
                     .text("Please fill out your name!")
-                    .appendTo($(".modal-content"));
+                    .appendTo($("#modal-form"));
             };
         });
     } else if (type === "city") {
         $("<form>")
-            .append($("<label>")
-                .attr("for", "city")
-                .text("City:"))
-            .append($("<br>"))
-            .append($("<input>")
-                .attr("type", "text")
-                .attr("id", "cityInput")
-                .attr("name", "city"))
-            .append($("<br>"))
-            .append($("<br>"))
-            .append($("<input>")
-                .attr("type", "submit"))
-            .appendTo($(".modal-content"));
+            .attr("id", "modal-form")
+            .append(cityTextInput, submitButton)
+            .appendTo(".modal-content");
 
         $("form").on("submit", function (event) {
             event.preventDefault();
             var cityName = $("#cityInput").val().trim();
-            localStorage.setItem('city', cityName);
-            if (cityName) {
+            if (cityName && cityName != "") {
                 $("#city-button").show();
                 displayInfo(cityName, null);
                 getCityData(cityName, "startup");
+                localStorage.setItem('city', cityName);
+                $(".modal-content").empty();
                 $(".modal").hide();
             } else {
                 $("<p>")
                     .text("Please fill your city!")
-                    .appendTo($(".modal-content"));
+                    .appendTo($("#modal-form"));
             };
         });
     } else if (type === "error") {
         //Code to populate error
-        $("<form>")
+        $("#modal-form")
             .append($("<label>")
                 .attr("for", "error")
                 .text("Error!"))
@@ -128,10 +114,7 @@ function getCityData(city, module) {
         .then(function (response) {
             if (response.ok) {
                 return response.json();
-            }
-        })
-        .then(function (data) {
-            console.log(data);
+        }}).then(function (data) {
             //Sends data according to fed parameter to the appropriate function
             if (module === "startup") {
                 getForecast(data);
@@ -140,9 +123,7 @@ function getCityData(city, module) {
                 getForecast(data);
             } else if (module === "traffic") {
                 initMap(data);
-            }
-        })
-};
+            }})};
 
 //Uses coordinates to get 5-day forecast data
 function getForecast(city) {
@@ -152,48 +133,15 @@ function getForecast(city) {
         "&lon=" +
         city.coord.lon +
         "&appid=4493e550e9acf995029c8985968d6001"
-    )
-        .then(function (response) {
+    ).then(function (response) {
             if (response.ok) {
                 return response.json();
             } else {
                 alert("ERROR");
             }
-        })
-        .then(function (data) {
-            console.log(data);
+    }).then(function (data) {
             displayWeather(data);
-            // var iconCode = data.current.weather[0].icon;
-            // var iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
-            // $('#weather')
-            //     .append($('<img>')
-            //         .attr("id", "current-icon")
-            //         .attr('src', iconURL));
-            // $('#weather')
-            //     .append($('<h1>')
-            //         .text('Temperature: ' + Math.floor(((data.current.temp - 273.15) * 9 / 5 + 32)) + 'F'));
-            // $('#weather')
-            //     .append($('<h1>')
-            //         .text('Wind: ' + data.current.wind_speed + 'MPH'));
-            // $('#weather')
-            //     .append($('<h1>')
-            //         .text('Humidity: ' + data.current.humidity + '%'));
-            // $('#weather')
-            //     .append($('<h1>')
-            //         .text('UV Index: ' + data.current.uvi));
-
-            // var currentTempH1 = document.querySelector('#dashboard-current-h1-temperature');
-            // currentTempH1.textContent = 'Temperature: ' + data.current.temp + 'F';
-            // var currentWindH1 = document.querySelector('#dashboard-current-h1-wind');
-            // currentWindH1.textContent = 'Wind: ' + data.current.wind_speed + 'MPH';
-            // var currentHumidityH1 = document.querySelector('#dashboard-current-h1-humidity');
-            // currentHumidityH1.textContent = 'Humidity: ' + data.current.humidity + '%';
-            // var currentUVH1 = document.querySelector('#dashboard-current-h1-uv');
-            // currentUVH1.textContent = data.current.uvi;
-            // var currentUVI = data.current.uvi;
-
-        });
-}
+        })};
 
 //Displays user name and city in element
 function displayInfo(city, name) {
@@ -207,43 +155,28 @@ function displayInfo(city, name) {
     }
 }
 
+//Uses api data to display today's weather
 function displayWeather(cityObj) {
-    $("#weather").empty();
-    var iconCode = cityObj.current.weather[0].icon;
-    var iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
     $('#weather')
+        .empty()
         .append($('<img>')
             .attr("id", "current-icon")
-            .attr('src', iconURL));
-    $('#weather')
+            .attr('src', "http://openweathermap.org/img/w/" + cityObj.current.weather[0].icon + ".png"))
         .append($('<h1>')
-            .text('Temperature: ' + Math.floor(((cityObj.current.temp - 273.15) * 9 / 5 + 32)) + 'F'));
-    $('#weather')
+            .text('Temperature: ' + Math.floor(((cityObj.current.temp - 273.15) * 9 / 5 + 32)) + 'F'))
         .append($('<h1>')
-            .text('Wind: ' + cityObj.current.wind_speed + 'MPH'));
-    $('#weather')
+            .text('Wind: ' + cityObj.current.wind_speed + 'MPH'))
         .append($('<h1>')
-            .text('Humidity: ' + cityObj.current.humidity + '%'));
-    $('#weather')
+            .text('Humidity: ' + cityObj.current.humidity + '%'))
         .append($('<h1>')
             .text('UV Index: ' + cityObj.current.uvi));
-
-    var currentTempH1 = document.querySelector('#dashboard-current-h1-temperature');
-    currentTempH1.textContent = 'Temperature: ' + cityObj.current.temp + 'F';
-    var currentWindH1 = document.querySelector('#dashboard-current-h1-wind');
-    currentWindH1.textContent = 'Wind: ' + cityObj.current.wind_speed + 'MPH';
-    var currentHumidityH1 = document.querySelector('#dashboard-current-h1-humidity');
-    currentHumidityH1.textContent = 'Humidity: ' + cityObj.current.humidity + '%';
-    var currentUVH1 = document.querySelector('#dashboard-current-h1-uv');
-    currentUVH1.textContent = cityObj.current.uvi;
-    var currentUVI = cityObj.current.uvi;
 }
 
 //Uses coordiates to display google map with traffic overlay
-function initMap(city) {
+function initMap(cityObj) {
     const map = new google.maps.Map(document.getElementById("map"), {
         zoom: 13,
-        center: { lat: city.coord.lat, lng: city.coord.lon },
+        center: { lat: cityObj.coord.lat, lng: cityObj.coord.lon },
     });
     const trafficLayer = new google.maps.TrafficLayer();
     trafficLayer.setMap(map);
@@ -272,9 +205,10 @@ if (savedCity && userName) {
     getCityData(savedCity, "startup");
 };
 
+//Info button event listeners.
 $('#username-button').on('click', function (event) {
     event.preventDefault();
-    modalMaker('both');
+    modalMaker("name");
 });
 
 $("#city-button").on("click", function (event) {
