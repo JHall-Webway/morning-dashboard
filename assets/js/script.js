@@ -30,6 +30,7 @@ function modalMaker(type) {
 
     var submitButton = $("<input>")
         .attr("type", "submit");
+
     //Populates modal with forms/information according to type
     if (type === "both") {
         $("<form>")
@@ -41,11 +42,11 @@ function modalMaker(type) {
             event.preventDefault();
             var cityName = $("#cityInput").val().trim();
             var name = $("#nameInput").val().trim();
-            if (cityName && name && cityName != "" && name != "") {
+            if (cityName && name) {
                 $("#city-button").show();
                 $("#username-button").show();
                 displayInfo(cityName, name);
-                getCityData(cityName, "startup");
+                getCityData(cityName);
                 localStorage.setItem('name', name);
                 localStorage.setItem('city', cityName);
                 $(".modal-content").empty();
@@ -65,7 +66,7 @@ function modalMaker(type) {
         $("form").on("submit", function (event) {
             event.preventDefault();
             var name = $("#nameInput").val().trim();
-            if (name && name != "") {
+            if (name) {
                 $("#username-button").show();
                 displayInfo(null, name);
                 localStorage.setItem('name', name);
@@ -86,10 +87,10 @@ function modalMaker(type) {
         $("form").on("submit", function (event) {
             event.preventDefault();
             var cityName = $("#cityInput").val().trim();
-            if (cityName && cityName != "") {
+            if (cityName) {
                 $("#city-button").show();
                 displayInfo(cityName, null);
-                getCityData(cityName, "startup");
+                getCityData(cityName);
                 localStorage.setItem('city', cityName);
                 $(".modal-content").empty();
                 $(".modal").hide();
@@ -109,21 +110,16 @@ function modalMaker(type) {
 };
 
 //Fetches immediate data for chosen city, including coordinates and current weather.
-function getCityData(city, module) {
+function getCityData(city) {
     fetch("https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=4493e550e9acf995029c8985968d6001")
         .then(function (response) {
             if (response.ok) {
                 return response.json();
         }}).then(function (data) {
             //Sends data according to fed parameter to the appropriate function
-            if (module === "startup") {
-                getForecast(data);
-                initMap(data);
-            } else if (module === "weather") {
-                getForecast(data);
-            } else if (module === "traffic") {
-                initMap(data);
-            }})};
+            getForecast(data);
+            initMap(data);
+        })};
 
 //Uses coordinates to get 5-day forecast data
 function getForecast(city) {
@@ -132,6 +128,7 @@ function getForecast(city) {
         city.coord.lat +
         "&lon=" +
         city.coord.lon +
+        '&units=' + 'imperial' +
         "&appid=4493e550e9acf995029c8985968d6001"
     ).then(function (response) {
             if (response.ok) {
@@ -163,7 +160,7 @@ function displayWeather(cityObj) {
             .attr("id", "current-icon")
             .attr('src', "http://openweathermap.org/img/w/" + cityObj.current.weather[0].icon + ".png"))
         .append($('<h1>')
-            .text('Temperature: ' + Math.floor(((cityObj.current.temp - 273.15) * 9 / 5 + 32)) + 'F'))
+            .text('Temperature: ' + Math.floor(cityObj.current.temp) + 'F'))
         .append($('<h1>')
             .text('Wind: ' + cityObj.current.wind_speed + 'MPH'))
         .append($('<h1>')
@@ -185,7 +182,7 @@ function initMap(cityObj) {
 //startup process basied on parameters
 if (savedCity && userName) {
     displayInfo(savedCity, userName);
-    getCityData(savedCity, "startup");
+    getCityData(savedCity);
 } else if (!savedCity && !userName) {
     savedCity = "";
     userName = "";
@@ -202,7 +199,7 @@ if (savedCity && userName) {
     $("#username-button").hide();
     displayInfo(savedCity, null);
     modalMaker("name");
-    getCityData(savedCity, "startup");
+    getCityData(savedCity);
 };
 
 //Info button event listeners.
