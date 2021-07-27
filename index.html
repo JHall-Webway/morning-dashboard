@@ -24,12 +24,10 @@
             <li class="pure-menu-item">
               <button class="pure-menu-link" id="city-button"></button>
             </li>
-            <!-- <li class="pure-menu-item">
-              <button  class="pure-menu-link" id="weather-button">Weather</button>
+            <li>
+              <button class="pure-menu-link" id="commute-button">Commute</button>
             </li>
-            <li class="pure-menu-item">
-              <button class="pure-menu-link" id="both-button">Both</button>
-            </li> -->
+
           </ul>
         </div>
       </div>
@@ -37,14 +35,17 @@
       <div id="main">
         <div class="header">
           <h1>Morning Dashboard</h1>
-          <h2>Welcome <span class="userName">New User!</span></h2>
+          <h2>Welcome <span class="userName">New User</span>!</h2>
         </div>
 
         <div class="content">
           <!-- <h2 class="content-subhead">Using the Application</h2>
           <p>This area would house the inital map or weather</p> -->
           <div id="map"></div>
-          <div id='weather'></div>
+          <div id='weather-and-travel'>
+            <div id='weather'></div>
+            <div id='travel'></div>
+          </div>
         </div>
     </div>
   </div>
@@ -56,6 +57,7 @@
         integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="./assets/js/script.js"></script>
+    <script src="./assets/js/openRoute.js"></script>
     <script
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5o7fDUVsLBHr8AEWT2N3_cXSOa_6n-Mc&callback=initMap&libraries=&v=weekly"
         async></script>
