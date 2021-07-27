@@ -206,11 +206,13 @@ small screens.
 }
 
 #weather {
-  background-color: rgb(1,191,255);
+  background-color: rgb(1,191,255, 0.8);
   width: 45%;
   margin: 5px 0 0 0;
+  border-color: rgb(0, 0, 0);
+  border-style: solid;
   border-radius: 20px;
-  height: 720px;
+  height: 725px;
 }
 
 /* -- Responsive Styles (Media Queries) ------------------------------------- */
@@ -222,8 +224,9 @@ Hides the menu at `48em`, but modify this based on your app's needs.
   .header {
     border-left:solid rgb(0, 0, 0) 4px;
     border-right:solid rgb(0, 0, 0) 4px;
+    border-bottom:solid rgb(0, 0, 0) 4px;
     padding: 10px 20px;
-  background-color: rgb(1,191,255);
+  background-color: rgb(13, 157, 227);
   justify-content: space-between;
   flex-wrap: wrap;
   position: sticky;
@@ -233,6 +236,7 @@ Hides the menu at `48em`, but modify this based on your app's needs.
   .content {
     padding-left: 2em;
     padding-right: 2em;
+    border-top: #000;
     border-left:solid rgb(0, 0, 0) 4px;
     border-right:solid rgb(0, 0, 0) 4px;
     border-bottom:solid rgb(0, 0, 0) 4px;
@@ -247,8 +251,7 @@ Hides the menu at `48em`, but modify this based on your app's needs.
   }
   #menu {
     left: 150px;
-    background-color: rgb(62,86,62);
-    border:rgb(0, 0, 0);
+    border:rgb(255, 255, 255);
     border-width: 5px;
   }
 
