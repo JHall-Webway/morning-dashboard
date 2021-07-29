@@ -1,10 +1,11 @@
-body,
-html {
-  height: 100%;
-  background-image: url("../images/menu-background.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+body {
+  color: rgb(0, 0, 0);
+}
+
+.pure-img-responsive {
+  max-width: 100%;
+  height: auto;
+
 }
 
 h1,
@@ -72,7 +73,10 @@ appears on the left side of the page.
 /*
     Remove all background/borders, since we are applying them to #menu.
     */
-#menu .pure-menu,
+#menu .pure-menu {
+  background-color: rgb(1, 191, 255);
+  padding: 0px;
+}
 #menu .pure-menu ul {
   border: none;
   background: transparent;
@@ -192,20 +196,30 @@ appears on the left side of the page.
 }
 
 #map {
-  height: 500px;
-  width: 100%;
-  border-radius: 10px;
-  border-color: #1f8dd6;
-  padding: 10px;
-  margin: 5px;
+
+  height: 720px;
+  width: 45%;
+  border-radius: 20px;
+  float: right;
+}
+
+#weather-and-travel {
+  background-color: rgb(1, 191, 255, 0.8);
+  width: 45%;
+  margin: 5px 0 0 0;
+  border-color: rgb(0, 0, 0);
+  border-style: solid;
+  border-radius: 20px;
+  height: 725px;
 }
 
 #weather {
-  border-radius: 10px;
-  background-color: lightblue;
-  width: 100%;
-  margin-top: 5px;
-  padding: 10px;
+  height: 50%;
+}
+
+#travel {
+  height: 50%;
+
 }
 
 /* -- Responsive Styles (Media Queries) ------------------------------------- */
@@ -215,7 +229,13 @@ Hides the menu at `48em`, but modify this based on your app's needs.
 */
 @media (min-width: 48em) {
   .header {
+
+    border-left: solid rgb(0, 0, 0) 4px;
+    border-right: solid rgb(0, 0, 0) 4px;
+    border-bottom: solid rgb(0, 0, 0) 4px;
     padding: 10px 20px;
+    background-color: rgb(13, 157, 227);
+
     justify-content: space-between;
     flex-wrap: wrap;
     position: sticky;
@@ -225,14 +245,23 @@ Hides the menu at `48em`, but modify this based on your app's needs.
   .content {
     padding-left: 2em;
     padding-right: 2em;
+    border-top: #000;
+    border-left: solid rgb(0, 0, 0) 4px;
+    border-right: solid rgb(0, 0, 0) 4px;
+    border-bottom: solid rgb(0, 0, 0) 4px;
   }
 
   #layout {
+    background-image: url(https://images.unsplash.com/photo-1575380591643-b2c92368dc6d?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2t5bGluZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80);
+    background-repeat: no-repeat;
+    background-size: 100%;
     padding-left: 150px; /* left col width "#menu" */
     left: 0;
   }
   #menu {
     left: 150px;
+    border: rgb(255, 255, 255);
+    border-width: 5px;
   }
 
   .menu-link {
@@ -257,28 +286,17 @@ Hides the menu at `48em`, but modify this based on your app's needs.
     position: relative;
     left: 150px;
   }
-}
 
-/*Add fading class for pop up elements*/
-.fading {
-  -webkit-animation-duration: 1s;
-  -webkit-animation-name: fading;
-  animation-duration: 1s;
-  animation-name: fading;
-}
-@-webkit-keyframes fading {
-  from {
-    color: rgba(255, 51, 0, 0.582);
+  .content {
+    display: flex;
+    flex-wrap: wrap;
   }
-  to {
-    color: black;
+
+  #map {
+    width: 100%;
   }
-}
-@keyframes fading {
-  from {
-    color: black;
-  }
-  to {
-    color: rgba(255, 51, 0, 0.582);
+
+  #weather-and-travel {
+    width: 100%;
   }
 }
