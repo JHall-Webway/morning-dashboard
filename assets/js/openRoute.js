@@ -184,15 +184,6 @@ locationsObject.getLocations = function() {
       if ($('#' + locationsObject.states[0] + '-location-p').text()) {
         $('#' + locationsObject.states[0] + '-location-p')
           .text(capitalizeFirstLetter(state) + ' Location: ' + addressString.trim());
-          $("#commute-button").on("click", commute);
-          $("#city-button").on("click", clickCity);
-          $("#username-button").on("click", clickUserName);
-          $('body').off('click', exitModal)
-          $(".modal-content").empty();
-          $(".modal").hide();
-          locationsObject.progressState();
-          var fn = locationsObject[locationsObject.functions[0]];
-          if (typeof fn === "function") fn();
       }
       else {
         $("<p>")
@@ -200,6 +191,15 @@ locationsObject.getLocations = function() {
           .attr('id', state + '-location-p')
           .appendTo($("#travel"));
       }
+      $(".modal-content").empty();
+      $(".modal").hide();
+      $("#commute-button").on("click", commute);
+      $("#city-button").on("click", clickCity);
+      $("#username-button").on("click", clickUserName);
+      $('body').off('click', exitModal)
+      locationsObject.progressState();
+      var fn = locationsObject[locationsObject.functions[0]];
+      if (typeof fn === "function") fn();
     }
     else {
       if (!$('#fill-out-form-p').text()) {
@@ -232,14 +232,17 @@ locationsObject.getLocations = function() {
 
 //Add event listener for commute button to start sequence of locationsObject methods
 function commute() {
-  // event.preventDefault();
-  var fn = locationsObject[locationsObject.functions[0]];
-  if (typeof fn === "function") fn();
-  if (!$('#commute-h2').text()) {
-    $('<h2>')
-        .text('Commute:')
-        .attr('id', 'commute-h2')
-        .appendTo($('#travel'));
+  var savedCity = localStorage.getItem("city");
+  var userName = localStorage.getItem("name");
+  if (savedCity && userName) {
+    var fn = locationsObject[locationsObject.functions[0]];
+    if (typeof fn === "function") fn();
+    if (!$('#commute-h2').text()) {
+      $('<h2>')
+          .text('Commute:')
+          .attr('id', 'commute-h2')
+          .appendTo($('#travel'));
+    }
   }
 }
 

@@ -17,9 +17,13 @@ function inArray(variable, array) {
 //Pulls up modal with the appropriate fields for input and establishes element blocks.
 function modalMaker(type) {
     $(".modal").show();
-    $("#city-button").off("click", clickCity);
-    $("#username-button").off("click", clickUserName);
-    $("#commute-button").off("click", commute);
+
+    if (type==='city' || type==='name') {
+        $("#city-button").off("click", clickCity);
+        $("#username-button").off("click", clickUserName);
+        $("#commute-button").off("click", commute);
+    }
+
     var nameTextInput = $("<label>")
         .attr("for", "name")
         .text("Name:")
@@ -65,10 +69,6 @@ function modalMaker(type) {
                 localStorage.setItem('city', cityName);
                 $(".modal-content").empty();
                 $(".modal").hide();
-                $("#commute-button").on("click", commute);
-                $("#city-button").on("click", clickCity);
-                $("#username-button").on("click", clickUserName);
-                $('body').off('click', exitModal);
             } else {
                 if (!$('#fill-out-forms-p').text()) {
                     $("<p>")
@@ -91,12 +91,12 @@ function modalMaker(type) {
                 $("#username-button").show();
                 displayInfo(null, name);
                 localStorage.setItem('name', name);
-                $(".modal-content").empty();
-                $(".modal").hide();
                 $("#commute-button").on("click", commute);
                 $("#city-button").on("click", clickCity);
                 $("#username-button").on("click", clickUserName);
                 $('body').off('click', exitModal);
+                $(".modal-content").empty();
+                $(".modal").hide();
             } else {
                 if (!$('#fill-out-name-p').text()) {
                     $("<p>")
@@ -120,12 +120,12 @@ function modalMaker(type) {
                 displayInfo(cityName, null);
                 getCityData(cityName);
                 localStorage.setItem('city', cityName);
-                $(".modal-content").empty();
-                $(".modal").hide();
                 $("#commute-button").on("click", commute);
                 $("#city-button").on("click", clickCity);
                 $("#username-button").on("click", clickUserName);
                 $('body').off('click', exitModal);
+                $(".modal-content").empty();
+                $(".modal").hide();
             } else {
                 if (!$('#fill-out-city-p').text()) {
                     $("<p>")
@@ -143,24 +143,25 @@ function modalMaker(type) {
                 .text("Error!"))
     }
 
-    function exitModal(e) {
-        var children = Object.values($('.modal-content').children()[0]);
-        children.push($('#modal-form')[0]);
-        children.push($('#commute-button')[0]);
-        children.push($('#city-button')[0]);
-        children.push($('#username-button')[0]);
-        console.log(children);
-        if (!inArray(e.target, children)) {
-          $("#commute-button").on("click", commute);
-          $("#city-button").on("click", clickCity);
-          $("#username-button").on("click", clickUserName);
-          $('body').off('click', exitModal);
-          $(".modal-content").empty();
-          $(".modal").hide();
+    if (type==='city' || type==='name') {
+        function exitModal(e) {
+            var children = Object.values($('.modal-content').children()[0]);
+            children.push($('#modal-form')[0]);
+            children.push($('#commute-button')[0]);
+            children.push($('#city-button')[0]);
+            children.push($('#username-button')[0]);
+            if (!inArray(e.target, children)) {
+                $("#commute-button").on("click", commute);
+                $("#city-button").on("click", clickCity);
+                $("#username-button").on("click", clickUserName);
+                $('body').off('click', exitModal);
+                $(".modal-content").empty();
+                $(".modal").hide();
+            }
         }
-      }
-    
-      $('body').on('click', exitModal)
+        
+        $('body').on('click', exitModal)
+    }
 };
 
 //Fetches immediate data for chosen city, including coordinates and current weather.
@@ -268,3 +269,4 @@ function clickCity() {
 $('#username-button').on('click', clickUserName);
 
 $("#city-button").on("click", clickCity);
+
