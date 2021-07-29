@@ -12,8 +12,18 @@
     />
     <link rel="stylesheet" href="./assets/css/style.css" />
     <title>Morning Dashboard</title>
-    <link rel="icon" type="image/png" href="./assets/images/favicon-32x32.png" sizes="32x32" />
-<link rel="icon" type="image/png" href="./assets/images/favicon-16x16.png" sizes="16x16" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="./assets/images/favicon-32x32.png"
+      sizes="32x32"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="./assets/images/favicon-16x16.png"
+      sizes="16x16"
+    />
   </head>
 
   <body>
@@ -23,17 +33,25 @@
       </a>
 
       <div id="menu">
-
         <div class="pure-menu">
-          <button class="pure-menu-heading userName" id="username-button"></button>
+          <button
+            class="pure-menu-heading userName"
+            id="username-button"
+          ></button>
           <ul class="pure-menu-list">
-            <li class="pure-menu-item">
-              <button class="pure-menu-link" id="city-button"></button>
-            </li>
-            <li>
-              <button class="pure-menu-link" id="commute-button">Commute</button>
-            </li>
+              <button
+                class="pure-menu-item"
+                class="pure-menu-link"
+                id="city-button"
+              ></button>
 
+              <button
+                class="pure-menu-item"
+                class="pure-menu-link"
+                id="commute-button">
+                Commute
+              </button>
+            </li>
           </ul>
         </div>
       </div>
@@ -41,16 +59,16 @@
       <div id="main">
         <div class="header">
           <h1>Morning Dashboard</h1>
-          <h2>Welcome <span class="userName">New User</span>!</h2>
+          <h2>Welcome <span class="userName"> </span></h2>
         </div>
 
         <div class="content">
           <!-- <h2 class="content-subhead">Using the Application</h2>
           <p>This area would house the inital map or weather</p> -->
           <div id="map"></div>
-          <div id='weather-and-travel'>
-            <div id='weather'></div>
-            <div id='travel'></div>
+          <div id="weather-and-travel">
+            <div id="weather"></div>
+            <div id="travel"></div>
           </div>
         </div>
       </div>

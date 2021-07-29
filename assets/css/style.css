@@ -1,11 +1,10 @@
-body {
-  color: rgb(0, 0, 0);
-}
-
-.pure-img-responsive {
-  max-width: 100%;
-  height: auto;
-
+body,
+html {
+  height: 100%;
+  background-image: url("../images/menu-background.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 h1,
@@ -74,8 +73,9 @@ appears on the left side of the page.
     Remove all background/borders, since we are applying them to #menu.
     */
 #menu .pure-menu {
-  background-color: rgb(1, 191, 255);
-  padding: 0px;
+  padding: 25px;
+  margin-top: 100px;
+  display: block;
 }
 #menu .pure-menu ul {
   border: none;
@@ -85,14 +85,7 @@ appears on the left side of the page.
 /*
     Add that light border to separate items into groups.
     */
-#menu .pure-menu ul,
-#menu .pure-menu .menu-item-divided {
-  border-top: 1px solid #333;
-}
-/*
-        Change color of the anchor links on hover/focus.
-        */
-#menu .pure-menu li a:hover,
+
 #menu .pure-menu li a:focus {
   background: #333;
 }
@@ -117,7 +110,6 @@ appears on the left side of the page.
 #menu .pure-menu-heading {
   font-size: 110%;
   color: #fff;
-  margin: 10px 5px 60px 5px;
   border-radius: 10px;
   padding: 25px;
 }
@@ -166,8 +158,8 @@ appears on the left side of the page.
 }
 
 .pure-menu-item {
-  height: 40px;
-  margin: 5px 0 0 0;
+  padding: 20px;
+  margin-top: 20px;
 }
 
 .modal {
@@ -188,7 +180,8 @@ appears on the left side of the page.
 .modal-content {
   background-color: #079afc;
   margin: auto;
-  padding: 20px;
+  align-items: center;
+  padding: 20px 150px 20px 20px;
   border: 1px solid #888;
   border-radius: 10px;
   width: 20%;
@@ -196,7 +189,6 @@ appears on the left side of the page.
 }
 
 #map {
-
   height: 720px;
   width: 45%;
   border-radius: 20px;
@@ -219,7 +211,6 @@ appears on the left side of the page.
 
 #travel {
   height: 50%;
-
 }
 
 /* -- Responsive Styles (Media Queries) ------------------------------------- */
@@ -229,7 +220,6 @@ Hides the menu at `48em`, but modify this based on your app's needs.
 */
 @media (min-width: 48em) {
   .header {
-
     border-left: solid rgb(0, 0, 0) 4px;
     border-right: solid rgb(0, 0, 0) 4px;
     border-bottom: solid rgb(0, 0, 0) 4px;
@@ -252,7 +242,6 @@ Hides the menu at `48em`, but modify this based on your app's needs.
   }
 
   #layout {
-    background-image: url(https://images.unsplash.com/photo-1575380591643-b2c92368dc6d?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8c2t5bGluZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80);
     background-repeat: no-repeat;
     background-size: 100%;
     padding-left: 150px; /* left col width "#menu" */
