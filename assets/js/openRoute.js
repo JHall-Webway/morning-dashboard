@@ -1,27 +1,29 @@
-// Example POST method implementation:
+//Asynchronous function to fetch data from Open Route with headers provided and some parameters changed from the default values
 async function postData(url = '', data = {}) {
-  // Default options are marked with *
   const response = await fetch(url, {
-    method: 'POST', // *GET, POST, PUT, DELETE, etc.
-    mode: 'cors', // no-cors, *cors, same-origin
-    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: 'same-origin', // include, *same-origin, omit
+    method: 'POST',
+    mode: 'cors',
+    cache: 'no-cache',
+    credentials: 'same-origin',
     headers: {
       'Accept': 'application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8',
       'Content-Type': 'application/json',
       'Authorization': '5b3ce3597851110001cf624822a021e023d6442c86c9d2e3384eccb4',
     },
-    redirect: 'follow', // manual, *follow, error
-    referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
-    body: JSON.stringify(data) // body data type must match "Content-Type" header
+    redirect: 'follow',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify(data)
   });
   return(response);
 }
 
+//Function to capitalize the first letter of a string
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+//Create locationsObject which contains state variables to step through built-in methods in
+//specified order using method progressState
 var locationsObject = {};
 locationsObject.reset = function() {
   locationsObject.states = ['start', 'end', 'start', 'end', 'duration']
@@ -35,6 +37,7 @@ locationsObject.reset = function() {
   locationsObject.coordinates = [];
 }
 
+//Method that gets drive-time based on array of coordinates using Open Route API
 locationsObject.getDuration = function() {
   postData('https://api.openrouteservice.org/v2/directions/driving-car/geojson', 
       {coordinates: locationsObject.coordinates
@@ -56,11 +59,13 @@ locationsObject.getDuration = function() {
         $("<p>")
           .text('Drive Time: ' + Math.floor(data.features[0].properties.summary.duration/60) + ' min')
           .attr('id', 'travel-time-p')
-          .appendTo($("#travel-time-div"));
+          .appendTo($("#travel"));
       }
     });
 }
 
+//Method to convert address into coordinates to pass into getDuration to get drive-time
+//using XHR Open Route API request
 locationsObject.getCoordinates = function() {
 
   var request = new XMLHttpRequest();
@@ -90,6 +95,7 @@ locationsObject.getCoordinates = function() {
   request.send();
 }
 
+//Method to call a modal to get address information from the user and save in locationsObject using Open Route API
 locationsObject.getLocations = function() {
   $(".modal").show();
 
@@ -156,7 +162,7 @@ locationsObject.getLocations = function() {
         $("<p>")
           .text(capitalizeFirstLetter(locationsObject.states[0]) + ' Location: ' + addressString.trim())
           .attr('id', locationsObject.states[0] + '-location-p')
-          .appendTo($("#travel-time-div"));
+          .appendTo($("#travel"));
       }
       $(".modal-content").empty();
       $(".modal").hide();
@@ -179,9 +185,13 @@ locationsObject.getLocations = function() {
   })
 }
 
+//Add event listener for commute button to start sequence of locationsObject methods
 $("#commute-button").on("click", function (event) {
   event.preventDefault();
   locationsObject.reset();
   var fn = locationsObject[locationsObject.functions[0]];
   if (typeof fn === "function") fn();
+  $('<h2>')
+      .text('Commute:')
+      .appendTo($('#travel'));
 });
