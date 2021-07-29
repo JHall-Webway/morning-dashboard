@@ -7,6 +7,13 @@ html {
   background-size: cover;
 }
 
+h1,
+h2 {
+  display: flex;
+  flex-wrap: wrap;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
 #layout,
 #menu,
 .menu-link {
@@ -112,7 +119,6 @@ appears on the left side of the page.
 }
 
 .menu-link {
-  position: relative;
   display: block; /* show this only on small screens */
   top: 0;
   left: 0; /* "#menu width" */
