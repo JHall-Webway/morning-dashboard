@@ -17,6 +17,13 @@ async function postData(url = '', data = {}) {
   return(response);
 }
 
+//Create function to get state dependent address object from local storage
+function getAddress() {
+  var state = locationsObject.states[0];
+  var addressObject = JSON.parse(localStorage.getItem(state+'Location'));
+  return(addressObject)
+}
+
 //Function to capitalize the first letter of a string
 function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
@@ -82,7 +89,7 @@ locationsObject.getCoordinates = function() {
 
   var request = new XMLHttpRequest();
 
-  var location = locationsObject[locationsObject.states[0]+'Location'];
+  var location = getAddress();
 
   request.open('GET', 'https://api.openrouteservice.org/geocode/search/structured?'
                       + 'api_key=5b3ce3597851110001cf624822a021e023d6442c86c9d2e3384eccb4'
@@ -109,6 +116,10 @@ locationsObject.getCoordinates = function() {
 
 //Method to call a modal to get address information from the user and save in locationsObject using Open Route API
 locationsObject.getLocations = function() {
+  
+  $("#city-button").off("click", clickCity);
+  $("#username-button").off("click", clickUserName);
+  $("#commute-button").off("click", commute);
   $(".modal").show();
 
   var inputs = ['address', 'locality', 'region', 'country', 'postalCode'];
@@ -169,9 +180,19 @@ locationsObject.getLocations = function() {
         locationsObject[state+'Location'][inputName] = item;
         addressString += item + ' ';
       }
+      localStorage.setItem(state+'Location', JSON.stringify(locationsObject[state+'Location']))
       if ($('#' + locationsObject.states[0] + '-location-p').text()) {
         $('#' + locationsObject.states[0] + '-location-p')
           .text(capitalizeFirstLetter(state) + ' Location: ' + addressString.trim());
+          $("#commute-button").on("click", commute);
+          $("#city-button").on("click", clickCity);
+          $("#username-button").on("click", clickUserName);
+          $('body').off('click', exitModal)
+          $(".modal-content").empty();
+          $(".modal").hide();
+          locationsObject.progressState();
+          var fn = locationsObject[locationsObject.functions[0]];
+          if (typeof fn === "function") fn();
       }
       else {
         $("<p>")
@@ -179,13 +200,6 @@ locationsObject.getLocations = function() {
           .attr('id', state + '-location-p')
           .appendTo($("#travel"));
       }
-      $("#commute-button").on("click", commute);
-      $('body').off('click', exitModal)
-      $(".modal-content").empty();
-      $(".modal").hide();
-      locationsObject.progressState();
-      var fn = locationsObject[locationsObject.functions[0]];
-      if (typeof fn === "function") fn();
     }
     else {
       if (!$('#fill-out-form-p').text()) {
@@ -198,12 +212,15 @@ locationsObject.getLocations = function() {
   })
 
   function exitModal(e) {
-    $("#commute-button").off("click", commute);
     var children = Object.values($('.modal-content').children()[0].childNodes);
     children.push($('#modal-form')[0]);
     children.push($('#commute-button')[0]);
+    children.push($('#city-button')[0]);
+    children.push($('#username-button')[0]);
     if (!inArray(e.target, children)) {
       $("#commute-button").on("click", commute);
+      $("#city-button").on("click", clickCity);
+      $("#username-button").on("click", clickUserName);
       $('body').off('click', exitModal)
       $(".modal-content").empty();
       $(".modal").hide();

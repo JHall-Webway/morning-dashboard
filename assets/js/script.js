@@ -1,11 +1,25 @@
 
-//Attempt to pull existing data from localStorage 
+//Attempt to pull existing data from localStorage
 var savedCity = localStorage.getItem("city");
 var userName = localStorage.getItem("name");
+
+//Function to check if a variable is in an array
+function inArray(variable, array) {
+    var inBool = false;
+    for (i=0; i< array.length; i++) {
+      if (array[i] === variable) {
+        inBool = true;
+      }
+    }
+    return(inBool)
+  }
 
 //Pulls up modal with the appropriate fields for input and establishes element blocks.
 function modalMaker(type) {
     $(".modal").show();
+    $("#city-button").off("click", clickCity);
+    $("#username-button").off("click", clickUserName);
+    $("#commute-button").off("click", commute);
     var nameTextInput = $("<label>")
         .attr("for", "name")
         .text("Name:")
@@ -51,11 +65,18 @@ function modalMaker(type) {
                 localStorage.setItem('city', cityName);
                 $(".modal-content").empty();
                 $(".modal").hide();
+                $("#commute-button").on("click", commute);
+                $("#city-button").on("click", clickCity);
+                $("#username-button").on("click", clickUserName);
+                $('body').off('click', exitModal);
             } else {
-                $("<p>")
-                    .text("Please fill out both fields!")
-                    .appendTo($("#modal-form"));
-            };
+                if (!$('#fill-out-forms-p').text()) {
+                    $("<p>")
+                        .attr('id', 'fill-out-forms-p')
+                        .text("Please fill your all forms!")
+                        .appendTo($("#modal-form"));
+                }
+            }
         });
     } else if (type === "name") {
         $("<form>")
@@ -72,10 +93,17 @@ function modalMaker(type) {
                 localStorage.setItem('name', name);
                 $(".modal-content").empty();
                 $(".modal").hide();
+                $("#commute-button").on("click", commute);
+                $("#city-button").on("click", clickCity);
+                $("#username-button").on("click", clickUserName);
+                $('body').off('click', exitModal);
             } else {
-                $("<p>")
-                    .text("Please fill out your name!")
-                    .appendTo($("#modal-form"));
+                if (!$('#fill-out-name-p').text()) {
+                    $("<p>")
+                        .attr('id', 'fill-out-name-p')
+                        .text("Please fill your name!")
+                        .appendTo($("#modal-form"));
+                }
             };
         });
     } else if (type === "city") {
@@ -94,10 +122,17 @@ function modalMaker(type) {
                 localStorage.setItem('city', cityName);
                 $(".modal-content").empty();
                 $(".modal").hide();
+                $("#commute-button").on("click", commute);
+                $("#city-button").on("click", clickCity);
+                $("#username-button").on("click", clickUserName);
+                $('body').off('click', exitModal);
             } else {
-                $("<p>")
-                    .text("Please fill your city!")
-                    .appendTo($("#modal-form"));
+                if (!$('#fill-out-city-p').text()) {
+                    $("<p>")
+                        .attr('id', 'fill-out-city-p')
+                        .text("Please fill your city!")
+                        .appendTo($("#modal-form"));
+                }
             };
         });
     } else if (type === "error") {
@@ -107,6 +142,25 @@ function modalMaker(type) {
                 .attr("for", "error")
                 .text("Error!"))
     }
+
+    function exitModal(e) {
+        var children = Object.values($('.modal-content').children()[0]);
+        children.push($('#modal-form')[0]);
+        children.push($('#commute-button')[0]);
+        children.push($('#city-button')[0]);
+        children.push($('#username-button')[0]);
+        console.log(children);
+        if (!inArray(e.target, children)) {
+          $("#commute-button").on("click", commute);
+          $("#city-button").on("click", clickCity);
+          $("#username-button").on("click", clickUserName);
+          $('body').off('click', exitModal);
+          $(".modal-content").empty();
+          $(".modal").hide();
+        }
+      }
+    
+      $('body').on('click', exitModal)
 };
 
 //Fetches immediate data for chosen city, including coordinates and current weather.
@@ -202,13 +256,15 @@ if (savedCity && userName) {
     getCityData(savedCity);
 };
 
-//Info button event listeners.
-$('#username-button').on('click', function (event) {
-    event.preventDefault();
+function clickUserName() {
     modalMaker("name");
-});
+}
 
-$("#city-button").on("click", function (event) {
-    event.preventDefault();
-    modalMaker("city");
-});
+function clickCity() {
+    modalMaker('city');
+}
+
+//Info button event listeners.
+$('#username-button').on('click', clickUserName);
+
+$("#city-button").on("click", clickCity);
