@@ -48,5 +48,5 @@
     }
   }
 
-  document.addEventListener("click", handleEvent);
+  document.body.addEventListener("click", handleEvent);
 })(this, this.document);

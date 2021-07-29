@@ -22,6 +22,17 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+//Function to check if a variable is in an array
+function inArray(variable, array) {
+  var inBool = false;
+  for (i=0; i< array.length; i++) {
+    if (array[i] === variable) {
+      inBool = true;
+    }
+  }
+  return(inBool)
+}
+
 //Create locationsObject which contains state variables to step through built-in methods in
 //specified order using method progressState
 var locationsObject = {};
@@ -62,6 +73,7 @@ locationsObject.getDuration = function() {
           .appendTo($("#travel"));
       }
     });
+  locationsObject.reset();
 }
 
 //Method to convert address into coordinates to pass into getDuration to get drive-time
@@ -101,19 +113,22 @@ locationsObject.getLocations = function() {
 
   var inputs = ['address', 'locality', 'region', 'country', 'postalCode'];
   var inputsObject = {}
+  var state = locationsObject.states[0];
   
   var modalForm = $("<form>")
     .attr("id", "modal-form")
 
   modalForm.append($('<label>')
-    .text(capitalizeFirstLetter(locationsObject.states[0]) + ' Location'))
+    .text(capitalizeFirstLetter(state) + ' Location')
+    .attr("id", state + '-label'))
     .append('<br>')
     .append('<br>');
 
   for (i=0; i<inputs.length; i++) {
     inputName = inputs[i]
     inputsObject[inputName+'Label'] = $("<label>")
-    .text(capitalizeFirstLetter(inputName) + ":")
+      .text(capitalizeFirstLetter(inputName) + ":")
+      .attr("id", inputName + '-label')
 
     inputsObject[inputName+'Input'] = $("<input>")
       .attr("type", "text")
@@ -151,19 +166,21 @@ locationsObject.getLocations = function() {
       for (i=0; i<inputs.length; i++) {
         inputName = inputs[i];
         var item = inputsObject[inputName+'Input'].val().trim();
-        locationsObject[locationsObject.states[0]+'Location'][inputName] = item;
+        locationsObject[state+'Location'][inputName] = item;
         addressString += item + ' ';
       }
       if ($('#' + locationsObject.states[0] + '-location-p').text()) {
         $('#' + locationsObject.states[0] + '-location-p')
-          .text(capitalizeFirstLetter(locationsObject.states[0]) + ' Location: ' + addressString.trim());
+          .text(capitalizeFirstLetter(state) + ' Location: ' + addressString.trim());
       }
       else {
         $("<p>")
-          .text(capitalizeFirstLetter(locationsObject.states[0]) + ' Location: ' + addressString.trim())
-          .attr('id', locationsObject.states[0] + '-location-p')
+          .text(capitalizeFirstLetter(state) + ' Location: ' + addressString.trim())
+          .attr('id', state + '-location-p')
           .appendTo($("#travel"));
       }
+      $("#commute-button").on("click", commute);
+      $('body').off('click', exitModal)
       $(".modal-content").empty();
       $(".modal").hide();
       locationsObject.progressState();
@@ -171,11 +188,7 @@ locationsObject.getLocations = function() {
       if (typeof fn === "function") fn();
     }
     else {
-      if ($('#fill-out-form-p').text()) {
-        $('#fill-out-form-p')
-          .text("Please fill out all inputs.");
-      }
-      else {
+      if (!$('#fill-out-form-p').text()) {
         $("<p>")
           .text("Please fill out all inputs.")
           .attr('id', 'fill-out-form-p')
@@ -183,15 +196,36 @@ locationsObject.getLocations = function() {
       }
     }
   })
+
+  function exitModal(e) {
+    $("#commute-button").off("click", commute);
+    var children = Object.values($('.modal-content').children()[0].childNodes);
+    children.push($('#modal-form')[0]);
+    children.push($('#commute-button')[0]);
+    if (!inArray(e.target, children)) {
+      $("#commute-button").on("click", commute);
+      $('body').off('click', exitModal)
+      $(".modal-content").empty();
+      $(".modal").hide();
+    }
+  }
+
+  $('body').on('click', exitModal)
 }
 
 //Add event listener for commute button to start sequence of locationsObject methods
-$("#commute-button").on("click", function (event) {
-  event.preventDefault();
-  locationsObject.reset();
+function commute() {
+  // event.preventDefault();
   var fn = locationsObject[locationsObject.functions[0]];
   if (typeof fn === "function") fn();
-  $('<h2>')
-      .text('Commute:')
-      .appendTo($('#travel'));
-});
+  if (!$('#commute-h2').text()) {
+    $('<h2>')
+        .text('Commute:')
+        .attr('id', 'commute-h2')
+        .appendTo($('#travel'));
+  }
+}
+
+locationsObject.reset();
+
+$("#commute-button").on("click", commute);
